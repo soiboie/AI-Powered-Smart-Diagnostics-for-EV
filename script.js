@@ -1,159 +1,207 @@
-const API_KEY = "AIzaSyAspvZWTE2MUKrjEXzUHchmJXc1vtws_6A"; // Replace with your actual Gemini API key
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-002:generateContent?key=${API_KEY}`;
+// Constants
+const GEMINI_API_KEY = "AIzaSyAspvZWTE2MUKrjEXzUHchmJXc1vtws_6A";
+const EDEN_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI3ZWUwNjItZjE4ZS00NjFjLTg0OTgtNGU3MDc2MDFjMjMwIiwidHlwZSI6ImFwaV90b2tlbiJ9.sftmqvfpn7Jwvts9-4a-vFi3qK-QQOZuKRcBzhbRL3Y";
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-002:generateContent?key=${GEMINI_API_KEY}`;
+const EDEN_API_URL = "https://api.edenai.run/v2/image/generation";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const generateBtn = document.getElementById("generate-btn");
-    const flashcardsContainer = document.querySelector(".flashcards-container");
-    const templateSelect = document.getElementById("template-select");
+// DOM Elements
+const generateBtn = document.getElementById("generate-btn");
+const flashcardsContainer = document.querySelector(".flashcards-container");
+const templateSelect = document.getElementById("template-select");
+const themeToggle = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+const htmlElement = document.documentElement;
 
-    generateBtn.addEventListener("click", async () => {
-        const userInput = document.getElementById("user-input").value.trim();
-        const cardCount = parseInt(document.getElementById("card-count").value) || 5; // New input for card count
+// Event Listeners
+document.addEventListener("DOMContentLoaded", init);
+generateBtn.addEventListener("click", generateFlashcards);
+themeToggle.addEventListener("click", toggleTheme);
 
-        if (!userInput) {
-            alert("Please enter a topic.");
-            return;
-        }
+// Functions
+function init() {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  htmlElement.setAttribute("data-theme", savedTheme);
+  themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+}
 
-        generateBtn.innerText = "Generating...";
-        generateBtn.disabled = true;
-
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [
-                                {
-                                    text: `You are a flashcard generator. Generate exactly ${cardCount} flashcards about "${userInput}". Format them strictly as follows:\n\n
-                                    For each flashcard:
-                                    1. Create a concise title capturing the question's essence
-                                    2. Provide a crisp answer within a sentence 
-                    
-                                    Format strictly:
-                                    ---
-                                    Title: [CONCISE_TITLE]
-                                    A: [ANSWER]
-                                    ---
-                    
-                                    Example:
-                                    ---
-                                    Title: Photosynthesis Basics
-                                    A: The process plants use to convert sunlight into chemical energy.
-                                    ---
-                                    Only return ${cardCount} flashcards in this format without any extra text.`,
-                                },
-                            ],
-                        },
-                    ],
-                }),
-            });
-
-            const data = await response.json();
-            console.log("API Response:", JSON.stringify(data, null, 2));
-
-            generateBtn.innerText = "Generate Flashcards";
-            generateBtn.disabled = false;
-
-            if (data.error) {
-                alert("Google Gemini API Error: " + data.error.message);
-            } else if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                displayFlashcards(data.candidates[0].content.parts[0].text);
-            } else {
-                alert("No flashcards generated. Try again!");
-            }
-        } catch (error) {
-            console.error("API Error:", error);
-            alert("Error fetching flashcards. Please check the console.");
-            generateBtn.innerText = "Generate Flashcards";
-            generateBtn.disabled = false;
-        }
+async function generateEdenImage(prompt) {
+  try {
+    const response = await fetch(EDEN_API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${EDEN_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        providers: "replicate",
+        text: `${prompt} variation ${Math.floor(Math.random() * 1000)}`,
+        resolution: "512x512"
+      })
     });
 
-    // Display Flashcards Function
-    function displayFlashcards(flashcardText) {
-        flashcardsContainer.innerHTML = "";
-
-        const flashcards = flashcardText
-            .split(/---\n/g)
-            .filter(rawCard => rawCard.trim() !== '')
-            .map((card) => {
-                const lines = card
-                    .split("\n")
-                    .filter((line) => line.trim() !== "")
-                    .reduce((acc, line) => {
-                        const [key, ...value] = line.split(":");
-                        if (key) acc[key.trim()] = value.join(":").trim();
-                        return acc;
-                    }, {});
-
-                return{
-                    title: lines.Title || "Untitled",
-                    answer: lines.A || "No answer provided",
-                };
-            })
-            .filter((card) => card.title && card.answer);
-
-        if (flashcards.length === 0) {
-            alert("No valid flashcards detected. Try again!");
-            return;
-        }
-
-        flashcards.forEach((card, index) => {
-            const flashcard = document.createElement("div");
-            flashcard.className = "flashcard animate__animated animate__fadeIn";
-            flashcard.innerHTML = `
-                <div class="card-header">${card.title}</div>
-                <div class="card-body">
-                    <p class="answer hidden">${card.answer}</p>
-                </div>
-                <div class="card-instruction"></div>
-            `;
-            flashcardsContainer.appendChild(flashcard);
-        });
-
-        applyTemplate(templateSelect.value);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Apply Template Function
-    function applyTemplate(template) {
-        const flashcards = document.querySelectorAll(".flashcard");
-        flashcards.forEach((flashcard) => {
-            flashcard.className = "flashcard animate__animated animate__fadeIn";
-            flashcard.classList.add(template);
+    const data = await response.json();
+    return data.replicate?.items?.[0]?.image_resource_url || null;
+  } catch (error) {
+    console.error("Eden AI Error:", error);
+    return null;
+  }
+}
+
+async function generateFlashcards() {
+  const userInput = document.getElementById("user-input").value.trim();
+  const cardCount = parseInt(document.getElementById("card-count").value) || 5;
+
+  if (!userInput) {
+    alert("Please enter a topic.");
+    return;
+  }
+
+  generateBtn.innerText = "Generating...";
+  generateBtn.disabled = true;
+
+  try {
+    const response = await fetch(GEMINI_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ 
+            text: `You are an AI trained in Electric Vehicle diagnostics. Generate exactly ${cardCount} structured flashcards for: "${userInput}".
+
+            Format strictly as follows:
+            ---
+            Title: [EV_ERROR_CODE_OR_FAULT_CATEGORY] - [TECHNICAL_COMPONENT]
+            Instruction: [MAX 25 WORDS: Code meaning, causes (physical/software), vehicle impact, safety alerts]
+            Detail: [MAX 15 WORDS: DIY steps, tools needed, professional help triggers]
+            Icon: [RELEVANT_EMOJI_FOR_VISUAL_REPRESENTATION]
+            ---
+
+            Example Output:
+            Title: P0AA6 - Battery Isolation Fault
+            Instruction: High voltage isolation failure. Causes: coolant intrusion, damaged wiring. Impact: propulsion shutdown. Safety: wear Class 0 gloves before inspection.
+            Detail: Check battery seals, measure isolation resistance (>500Ω), replace damaged modules.
+            Icon: ⚡⚠️
+
+            Only return ${cardCount} flashcards in this exact format without commentary` 
+          }]
+        }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API request failed: ${response.status}`);
+
+    const geminiData = await response.json();
+    const flashcardText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!flashcardText) throw new Error("No flashcards generated by Gemini");
+
+    // Improved parsing with error handling
+    const flashcards = flashcardText
+      .split(/---\n/g)
+      .filter(rawCard => rawCard.trim())
+      .map(rawCard => {
+        const cardData = {};
+        const lines = rawCard.split('\n').filter(line => line.trim());
+        
+        lines.forEach(line => {
+          const [key, ...value] = line.split(/:(.+)/);
+          if (key && value) cardData[key.trim()] = value.join('').trim();
         });
-    }
 
-    // Click to Reveal Answer
-    flashcardsContainer.addEventListener("click", (e) => {
-        const card = e.target.closest(".flashcard");
-        if (card) {
-            const answer = card.querySelector(".answer");
-            answer.classList.toggle("hidden");
-            answer.classList.toggle("visible");
+        return {
+          title: cardData.Title || "Untitled",
+          instruction: cardData.Instruction || "No instruction provided",
+          detail: cardData.Detail || "No details available",
+          icon: cardData.Icon || "⚠️"
+        };
+      });
+
+    // Enhanced image generation with quality parameters
+    const flashcardsWithImages = await Promise.all(
+      flashcards.map(async (card, index) => {
+        await new Promise(resolve => setTimeout(resolve, index * 1500));
+        const imagePrompt = `Photorealistic 3D technical illustration of ${card.title}: 
+          - EV workshop environment
+          - No text/annotations
+          - Cycles render engine
+          - 8K resolution
+          - Professional lighting`;
+        
+        return {
+          ...card,
+          image: await generateEdenImage(imagePrompt)
+        };
+      })
+    );
+
+    displayFlashcards(flashcardsWithImages);
+} catch (error) {
+    console.error("Error:", error);
+    alert(`Error: ${error.message}`);
+} finally {
+    generateBtn.innerText = "Generate Flashcards";
+    generateBtn.disabled = false;
+}
+}
+
+// Improved display function
+function displayFlashcards(flashcards) {
+  flashcardsContainer.innerHTML = "";
+
+  if (!flashcards.length) {
+    flashcardsContainer.innerHTML = `<div class="alert alert-warning">No flashcards generated. Try again!</div>`;
+    return;
+  }
+
+  flashcards.forEach(card => {
+    const flashcard = document.createElement("div");
+    flashcard.className = `flashcard animate__animated animate__fadeIn ${templateSelect.value}`;
+
+    flashcard.innerHTML = `
+      <div class="card-image-container">
+        ${card.image ? 
+          `<img src="${card.image}" class="card-image" alt="${card.title}" 
+           onerror="this.parentElement.innerHTML = '<div class="image-error"></div>` :
+          `<div class="image-loading">
+            <div class="spinner-border text-primary"></div>
+            <p>Generating technical illustration...</p>
+          </div>`
         }
-    });
+      </div>
+      <div class="card-header">
+        <span class="card-icon">${card.icon}</span>
+        <h3>${card.title}</h3>
+      </div>
+      <div class="card-body">
+        <div class="instruction-text">${card.instruction}</div>
+        <hr>
+        <div class="detail-text">${card.detail}</div>
+      </div>
+    `;
+    
+    flashcardsContainer.appendChild(flashcard);
+  });
+}
 
-    // Theme Toggle Functionality
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
-    const htmlElement = document.documentElement;
+  applyTemplate(templateSelect.value);
 
-    // Load saved theme from localStorage
-    const savedTheme = localStorage.getItem("theme") || "light";
-    htmlElement.setAttribute("data-theme", savedTheme);
-    themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+function applyTemplate(template) {
+  const flashcards = document.querySelectorAll(".flashcard");
+  flashcards.forEach((flashcard) => {
+    flashcard.className = "flashcard animate__animated animate__fadeIn";
+    flashcard.classList.add(template);
+  });
+}
 
-    themeToggle.addEventListener("click", () => {
-        const currentTheme = htmlElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
+function toggleTheme() {
+  const currentTheme = htmlElement.getAttribute("data-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-        htmlElement.setAttribute("data-theme", newTheme);
-        themeIcon.textContent = newTheme === "dark" ? "🌙" : "☀️";
-        localStorage.setItem("theme", newTheme);
-    });
-});
+  htmlElement.setAttribute("data-theme", newTheme);
+  themeIcon.textContent = newTheme === "dark" ? "🌙" : "☀️";
+  localStorage.setItem("theme", newTheme);
+}
