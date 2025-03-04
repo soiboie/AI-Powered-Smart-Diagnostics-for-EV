@@ -318,3 +318,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Handle login form submission
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+        // Redirect to another page on successful login
+        if (response.ok) {
+            window.location.href = '/dashboard'; // Replace with your desired redirect URL
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+});
+
+
+// Handle signup form submission
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+    // Validate password match
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+        // Redirect to another page on successful signup
+        if (response.ok) {
+            window.location.href = '/login'; // Redirect to login page
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+});
