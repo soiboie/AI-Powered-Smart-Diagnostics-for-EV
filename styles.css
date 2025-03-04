@@ -26,10 +26,10 @@
   --slate-color: #b3c2cc;
   
   /* Template colors - Vibrant */
-  --yellow-color: #fddb3a;
-  --teal-color: #5ce1e6;
+  --yellow-color: #f0de83;
+  --teal-color: #29e5ec;
   --pink-color: #ffafd7;
-  --lime-color: #c5ee4f;
+  --lime-color: #dbff6e;
   
   /* Template colors - Gradient */
   --sunset-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
@@ -37,11 +37,7 @@
   --forest-gradient: linear-gradient(135deg, #88d3ce 0%, #6ab187 100%);
   --berry-gradient: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   
-  /* Template colors - Illustrated */
-  --light-color: #fafafa;
-  --dark-color: #37474f;
-  --nature-color: #dcedc8;
-  --tech-color: #e0f7fa;
+
 }
 
 /* Dark Theme */
@@ -330,12 +326,12 @@ body {
 }
 
 .flashcards-container {
-  margin-top: 40px; /* Space above the container */
+  margin-top: 50px; /* Space above the container */
   width: 100%; /* Full width */
-  padding-bottom: 60px; /* Space for footer or other content */
+  padding-bottom: 50px; /* Space for footer or other content */
   display: grid; /* Use CSS Grid for layout */
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-  gap: 20px; /* Space between cards */
+  gap: 25px; /* Space between cards */
 }
 
 /* Flashcard Template Styles - Base */
@@ -474,33 +470,32 @@ body {
 
 /* Modern Template */
 .flashcard.modern {
-  border-radius: 20px;
-  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .flashcard.modern.blue { background-color: var(--blue-color); }
 .flashcard.modern.purple { background-color: var(--purple-color); }
 .flashcard.modern.coral { background-color: var(--coral-color); }
 .flashcard.modern.slate { background-color: var(--slate-color); }
-
 .flashcard.modern .card-header {
-  background-color: rgba(0, 0, 0, 0.15);
-  text-align: left;
-  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 15px 20px;
 }
-
 .flashcard.modern .card-content {
   padding: 20px;
 }
 
 .flashcard.modern .icon-container {
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  top: 15px;
+  right: 15px;
+  bottom: auto;
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255, 255, 255, 0.8);
 }
+
 
 /* Vibrant Template */
 .flashcard.vibrant {
@@ -562,53 +557,6 @@ body {
   background-color: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(5px);
   border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Illustrated Template */
-.flashcard.illustrated {
-  border-radius: 15px;
-  overflow: hidden;
-  position: relative;
-}
-
-.flashcard.illustrated::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.15;
-  z-index: 0;
-  background-size: 200px 200px;
-  background-repeat: repeat;
-}
-
-.flashcard.illustrated.light { background-color: var(--light-color); }
-.flashcard.illustrated.dark { background-color: var(--dark-color); color: white; }
-.flashcard.illustrated.nature { background-color: var(--nature-color); }
-.flashcard.illustrated.tech { background-color: var(--tech-color); }
-
-.flashcard.illustrated .card-header,
-.flashcard.illustrated .card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.flashcard.illustrated .card-header {
-  background-color: rgba(255, 255, 255, 0.2);
-  text-align: center;
-  padding: 15px;
-}
-
-.flashcard.illustrated .icon-container {
-  top: 15px;
-  left: 15px;
-  right: auto;
-  bottom: auto;
-  width: 45px;
-  height: 45px;
-  border: 3px solid rgba(255, 255, 255, 0.5);
 }
 
 /* Illustrated patterns */
@@ -845,53 +793,6 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Illustrated Template */
-.flashcard.illustrated {
-  border-radius: 15px;
-  overflow: hidden;
-  position: relative;
-}
-
-.flashcard.illustrated::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.15;
-  z-index: 0;
-  background-size: 200px 200px;
-  background-repeat: repeat;
-}
-
-.flashcard.illustrated.light { background-color: var(--light-color); }
-.flashcard.illustrated.dark { background-color: var(--dark-color); color: white; }
-.flashcard.illustrated.nature { background-color: var(--nature-color); }
-.flashcard.illustrated.tech { background-color: var(--tech-color); }
-
-.flashcard.illustrated .card-header,
-.flashcard.illustrated .card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.flashcard.illustrated .card-header {
-  background-color: rgba(255, 255, 255, 0.2);
-  text-align: center;
-  padding: 15px;
-}
-
-.flashcard.illustrated .icon-container {
-  top: 15px;
-  left: 15px;
-  right: auto;
-  bottom: auto;
-  width: 45px;
-  height: 45px;
-  border: 3px solid rgba(255, 255, 255, 0.5);
-}
-
 /* Illustrated patterns */
 .flashcard.pattern-light-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E"); }
 .flashcard.pattern-light-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
@@ -925,7 +826,7 @@ body {
   
   .flashcard-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+    gap: 10px;
   }
   
   .flashcard .instruction {
