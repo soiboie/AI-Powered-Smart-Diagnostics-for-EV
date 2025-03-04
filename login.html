@@ -37,20 +37,22 @@
     </button>
     <div class="login container d-flex justify-content-center align-items-center vh-100">
         <div class="login-form p-4 shadow-lg rounded card">
-            <h2 class="text-center text-primary">Login</h2>
-            <input type="email" class="form-control mb-3" placeholder="Email">
-            <input type="password" class="form-control mb-3" placeholder="Password">
-            <button class="login-btn btn btn-primary w-100">Login</button>
-            <p class="text-center mt-3">Or sign in with</p>
-            <div class="d-flex justify-content-center">
-                <button class="btn btn-danger mx-2"><i class="fab fa-google"></i></button>
-                <button class="btn btn-primary mx-2"><i class="fab fa-facebook"></i></button>
-                <button class="btn btn-dark mx-2"><i class="fab fa-microsoft"></i></button>
-            </div>
-            <p class="text-center mt-3">Don't have an account? <a href="signup.html">Sign Up</a></p>
-            <p class="login-term">By logging in you agree to our Terms of Service and Privacy Policy</p>
+          <h2 class="text-center text-primary">Login</h2>
+          <form id="loginForm">
+            <input id="loginEmail" type="email" class="form-control mb-3" placeholder="Email" required>
+            <input id="loginPassword" type="password" class="form-control mb-3" placeholder="Password" required>
+            <button href="index.html" type="submit" class="login-btn btn btn-primary w-100">Login</button>
+          </form>
+          <p class="text-center mt-3">Or sign in with</p>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-danger mx-2"><i class="fab fa-google"></i></button>
+            <button class="btn btn-primary mx-2"><i class="fab fa-facebook"></i></button>
+            <button class="btn btn-dark mx-2"><i class="fab fa-microsoft"></i></button>
+          </div>
+          <p class="text-center mt-3">Don't have an account? <a href="signup.html">Sign Up</a></p>
+          <p class="login-term text-center text-muted">By logging in you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
         </div>
-    </div>
+      </div>
     
     <footer class="bg-dark text-light text-center py-3 mt-5">
         <p>&copy; 2025 AI-Powered Flashcards. All rights reserved.</p>
