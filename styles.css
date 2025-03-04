@@ -12,9 +12,39 @@
   --input-border: #ced4da;
   --button-background: #007bff;
   --button-text: #ffffff;
+  
+  /* Template colors - Classic */
+  --sage-color: #b5c4b1;
+  --mint-color: #dbf7db;
+  --cream-color: #f0edd4;
+  --lavender-color: #e6e6fa;
+  
+  /* Template colors - Modern */
+  --blue-color: #a8d0e6;
+  --purple-color: #d0b8e6;
+  --coral-color: #f6c9b0;
+  --slate-color: #b3c2cc;
+  
+  /* Template colors - Vibrant */
+  --yellow-color: #fddb3a;
+  --teal-color: #5ce1e6;
+  --pink-color: #ffafd7;
+  --lime-color: #c5ee4f;
+  
+  /* Template colors - Gradient */
+  --sunset-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  --ocean-gradient: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  --forest-gradient: linear-gradient(135deg, #88d3ce 0%, #6ab187 100%);
+  --berry-gradient: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  
+  /* Template colors - Illustrated */
+  --light-color: #fafafa;
+  --dark-color: #37474f;
+  --nature-color: #dcedc8;
+  --tech-color: #e0f7fa;
 }
 
-/* Change this */
+/* Dark Theme */
 html[data-theme="dark"] {
   --background-color: #1e1e1e;
   --text-color: #f4f4f4;
@@ -25,10 +55,16 @@ html[data-theme="dark"] {
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
   --card-background: #1e1e1e;
-  --input-background: #a59595;
+  --input-background: #333333;
   --input-border: #444444;
   --button-background: #0d6efd;
   --button-text: #ffffff;
+  
+  /* Illustrated colors dark mode adjustment */
+  --light-color: #2d2d2d;
+  --dark-color: #212121;
+  --nature-color: #2c4c3b;
+  --tech-color: #263238;
 }
 
 body {
@@ -46,7 +82,7 @@ body {
 }
 
 #theme-toggle {
-  position: fixed;
+  position: absolute;
   top: 70px;
   right: 20px;
   background-color: var(--primary-color);
@@ -58,10 +94,17 @@ body {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
 }
-
+  
 #theme-toggle:hover {
   background-color: var(--primary-hover-color);
   transform: translateY(-2px);
+}
+@media (max-width: 768px) {
+  #theme-toggle{
+    top: 70px;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
 }
 
 .user-input-container {
@@ -70,44 +113,934 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--box-background);
+  border: 1px solid var(--box-border);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.user-input-container:hover {
+  transform: translateY(-5px);
+}
+
+.user-input {
+  background-color: var(--input-background);
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.user-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.input-group label {
+  min-width: 150px;
+  text-align: right;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.input-group select, .input-group input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-background);
+  color: var(--text-color);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group select:focus, .input-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
 }
 
 .generate-btn {
-  width: 40%;
+  width: 60%;
+  margin: 10px auto;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s;
+  background-color: var(--button-background);
+  color: var(--button-text);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.generate-btn:active {
+  transform: translateY(1px);
+}
+
+/* Template controls styling */
+.template-controls {
+  width: 80%;
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: var(--box-background);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.template-controls h4 {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Flashcard Grid System for Equal Spacing */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.flashcards-container {
+/* Template selector styles */
+.template-selector {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
-  width: 100%;
+  margin: 10px 0 20px;
+  gap: 15px;
+  flex-wrap: wrap;
 }
+
+.template-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.template-option:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.template-option.active {
+  border-color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+.template-icon {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.template-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Color selector styles */
+.color-selector {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0 20px;
+  gap: 12px;
+}
+
+.color-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-option.active {
+  transform: scale(1.2);
+  border-color: #fff;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* Color options for templates */
+.color-classic-sage { background-color: var(--sage-color); }
+.color-classic-mint { background-color: var(--mint-color); }
+.color-classic-cream { background-color: var(--cream-color); }
+.color-classic-lavender { background-color: var(--lavender-color); }
+
+.color-modern-blue { background-color: var(--blue-color); }
+.color-modern-purple { background-color: var(--purple-color); }
+.color-modern-coral { background-color: var(--coral-color); }
+.color-modern-slate { background-color: var(--slate-color); }
+
+.color-vibrant-yellow { background-color: var(--yellow-color); }
+.color-vibrant-teal { background-color: var(--teal-color); }
+.color-vibrant-pink { background-color: var(--pink-color); }
+.color-vibrant-lime { background-color: var(--lime-color); }
+
+.color-gradient-sunset { background-image: var(--sunset-gradient); }
+.color-gradient-ocean { background-image: var(--ocean-gradient); }
+.color-gradient-forest { background-image: var(--forest-gradient); }
+.color-gradient-berry { background-image: var(--berry-gradient); }
+
+.color-illustrated-light { background-color: var(--light-color); }
+.color-illustrated-dark { background-color: var(--dark-color); }
+.color-illustrated-nature { background-color: var(--nature-color); }
+.color-illustrated-tech { background-color: var(--tech-color); }
 
 .flashcards-container img{
   height: 300px;
   width: 300px;
 }
 
+.flashcards-container {
+  margin-top: 40px; /* Space above the container */
+  width: 100%; /* Full width */
+  padding-bottom: 60px; /* Space for footer or other content */
+  display: grid; /* Use CSS Grid for layout */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 20px; /* Space between cards */
+}
+
+/* Flashcard Template Styles - Base */
 .flashcard {
-  background-color: var(--card-background);
-  border: 1px solid var(--box-border);
-  border-radius: 8px;
-  padding: 5px;
-  width: 370px;
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease-in-out, background-color 0.3s, color 0.3s;
+  width: 100%; /* Full width of the container */
+  border-radius: 15px; /* Rounded corners */
+  padding: 0; /* No padding */
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  position: relative; /* For positioning child elements */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.4s ease, box-shadow 0.4s ease; /* Smooth hover effects */
+  overflow: hidden; /* Hide overflowing content */
+  cursor: pointer; /* Indicates interactivity */
+  transform-style: preserve-3d; /* Enable 3D transformations */
+  perspective: 1000px; /* Depth for 3D effects */
+  background-color: #fff; /* Default background color */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border for better visibility */
 }
 
 .flashcard:hover {
   transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-.template-selector {
-  margin-top: 20px;
+.flashcard.loaded {
+  animation: float 6s ease-in-out infinite;
 }
 
-.animate__animated {
-  animation-duration: 1s;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-header {
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flashcard h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.flashcard .instruction {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.flashcard .detail {
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.8;
+  font-style: italic;
+  margin-top: 0}
+  /* Add this to your styles.css file to complete the missing styles */
+
+/* Flashcard Template Styles - Base (continued from your existing CSS) */
+.flashcard .detail {
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.8;
+  font-style: italic;
+  margin-top: 0;
+}
+
+/* Icon container styling */
+.icon-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%; /* Cover the bottom half */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
+    backdrop-filter: blur(3px); /* Blur effect */
+    z-index: 2;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Add a subtle border */
+}
+
+.artistic-icon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.artistic-icon svg {
+    width: 80%; /* Adjust the size of the SVG */
+    height: 80%; /* Adjust the size of the SVG */
+    opacity: 0.8; /* Make the icon slightly transparent */
+}
+
+.emoji-icon {
+    font-size: 40px; /* Increase the size of the emoji */
+    z-index: 2;
+    opacity: 0.8; /* Make the emoji slightly transparent */
+}
+/* Template-specific styles */
+/* Classic Template */
+.flashcard.classic {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.flashcard.classic.sage { background-color: var(--sage-color); }
+.flashcard.classic.mint { background-color: var(--mint-color); }
+.flashcard.classic.cream { background-color: var(--cream-color); }
+.flashcard.classic.lavender { background-color: var(--lavender-color); }
+
+.flashcard.classic .card-header {
+  background-color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+/* Modern Template */
+.flashcard.modern {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.flashcard.modern.blue { background-color: var(--blue-color); }
+.flashcard.modern.purple { background-color: var(--purple-color); }
+.flashcard.modern.coral { background-color: var(--coral-color); }
+.flashcard.modern.slate { background-color: var(--slate-color); }
+
+.flashcard.modern .card-header {
+  background-color: rgba(0, 0, 0, 0.15);
+  text-align: left;
+  padding: 20px;
+}
+
+.flashcard.modern .card-content {
+  padding: 20px;
+}
+
+.flashcard.modern .icon-container {
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Vibrant Template */
+.flashcard.vibrant {
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.flashcard.vibrant.yellow { background-color: var(--yellow-color); }
+.flashcard.vibrant.teal { background-color: var(--teal-color); }
+.flashcard.vibrant.pink { background-color: var(--pink-color); }
+.flashcard.vibrant.lime { background-color: var(--lime-color); }
+
+.flashcard.vibrant .card-header {
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 15px 20px;
+}
+
+.flashcard.vibrant .card-content {
+  padding: 20px;
+}
+
+.flashcard.vibrant .icon-container {
+  top: 15px;
+  right: 15px;
+  bottom: auto;
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Gradient Template */
+.flashcard.gradient {
+  border-radius: 15px;
+  color: white;
+  overflow: hidden;
+}
+
+.flashcard.gradient.sunset { background-image: var(--sunset-gradient); }
+.flashcard.gradient.ocean { background-image: var(--ocean-gradient); }
+.flashcard.gradient.forest { background-image: var(--forest-gradient); }
+.flashcard.gradient.berry { background-image: var(--berry-gradient); }
+
+.flashcard.gradient .card-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.flashcard.gradient .card-content {
+  padding: 20px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.flashcard.gradient .icon-container {
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Illustrated Template */
+.flashcard.illustrated {
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.flashcard.illustrated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.15;
+  z-index: 0;
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+.flashcard.illustrated.light { background-color: var(--light-color); }
+.flashcard.illustrated.dark { background-color: var(--dark-color); color: white; }
+.flashcard.illustrated.nature { background-color: var(--nature-color); }
+.flashcard.illustrated.tech { background-color: var(--tech-color); }
+
+.flashcard.illustrated .card-header,
+.flashcard.illustrated .card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.flashcard.illustrated .card-header {
+  background-color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  padding: 15px;
+}
+
+.flashcard.illustrated .icon-container {
+  top: 15px;
+  left: 15px;
+  right: auto;
+  bottom: auto;
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Illustrated patterns */
+.flashcard.pattern-light-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-dark-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-nature-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M0 0h10v10H0zM10 10h10v10H10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-tech-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M0 0h10v10H0zM10 10h10v10H10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .user-input-container {
+    width: 85%;
+  }
+  
+  .flashcard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .flashcard .instruction {
+    font-size: 14px;
+  }
+  
+  .flashcard .detail {
+    font-size: 12px;
+  }
+  
+  .template-selector {
+    gap: 10px;
+  }
+  
+  .template-option {
+    padding: 8px 12px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .user-input-container {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .template-option {
+    padding: 6px 8px;
+  }
+  
+  .template-icon {
+    font-size: 20px;
+  }
+  
+  .template-name {
+    font-size: 12px;
+  }
+  
+  .color-option {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .flashcard-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+  }
+}
+/* Add this to your styles.css file to complete the missing styles */
+
+/* Flashcard Template Styles - Base (continued from your existing CSS) */
+.flashcard .detail {
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.8;
+  font-style: italic;
+  margin-top: 0;
+}
+
+/* Icon container styling */
+.icon-container {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(3px);
+  z-index: 2;
+}
+
+.artistic-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.artistic-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.emoji-icon {
+  font-size: 22px;
+  z-index: 2;
+}
+
+/* Template-specific styles */
+/* Classic Template */
+.flashcard.classic {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.flashcard.classic.sage { background-color: var(--sage-color); }
+.flashcard.classic.mint { background-color: var(--mint-color); }
+.flashcard.classic.cream { background-color: var(--cream-color); }
+.flashcard.classic.lavender { background-color: var(--lavender-color); }
+
+.flashcard.classic .card-header {
+  background-color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+/* Modern Template */
+.flashcard.modern {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.flashcard.modern.blue { background-color: var(--blue-color); }
+.flashcard.modern.purple { background-color: var(--purple-color); }
+.flashcard.modern.coral { background-color: var(--coral-color); }
+.flashcard.modern.slate { background-color: var(--slate-color); }
+
+.flashcard.modern .card-header {
+  background-color: rgba(0, 0, 0, 0.15);
+  text-align: left;
+  padding: 20px;
+}
+
+.flashcard.modern .card-content {
+  padding: 20px;
+}
+
+.flashcard.modern .icon-container {
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Vibrant Template */
+.flashcard.vibrant {
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.flashcard.vibrant.yellow { background-color: var(--yellow-color); }
+.flashcard.vibrant.teal { background-color: var(--teal-color); }
+.flashcard.vibrant.pink { background-color: var(--pink-color); }
+.flashcard.vibrant.lime { background-color: var(--lime-color); }
+
+.flashcard.vibrant .card-header {
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 15px 20px;
+}
+
+.flashcard.vibrant .card-content {
+  padding: 20px;
+}
+
+.flashcard.vibrant .icon-container {
+  top: 15px;
+  right: 15px;
+  bottom: auto;
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Gradient Template */
+.flashcard.gradient {
+  border-radius: 15px;
+  color: white;
+  overflow: hidden;
+}
+
+.flashcard.gradient.sunset { background-image: var(--sunset-gradient); }
+.flashcard.gradient.ocean { background-image: var(--ocean-gradient); }
+.flashcard.gradient.forest { background-image: var(--forest-gradient); }
+.flashcard.gradient.berry { background-image: var(--berry-gradient); }
+
+.flashcard.gradient .card-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.flashcard.gradient .card-content {
+  padding: 20px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.flashcard.gradient .icon-container {
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Illustrated Template */
+.flashcard.illustrated {
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.flashcard.illustrated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.15;
+  z-index: 0;
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+.flashcard.illustrated.light { background-color: var(--light-color); }
+.flashcard.illustrated.dark { background-color: var(--dark-color); color: white; }
+.flashcard.illustrated.nature { background-color: var(--nature-color); }
+.flashcard.illustrated.tech { background-color: var(--tech-color); }
+
+.flashcard.illustrated .card-header,
+.flashcard.illustrated .card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.flashcard.illustrated .card-header {
+  background-color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  padding: 15px;
+}
+
+.flashcard.illustrated .icon-container {
+  top: 15px;
+  left: 15px;
+  right: auto;
+  bottom: auto;
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Illustrated patterns */
+.flashcard.pattern-light-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-light-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-dark-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-dark-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-nature-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M0 0h10v10H0zM10 10h10v10H10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-nature-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006400' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.flashcard.pattern-tech-1::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M0 0h10v10H0zM10 10h10v10H10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-2::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M10 0l10 10-10 10L0 10z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-3::before { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-4::before { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M0 20h40v20H0zM20 0h20v20H20z'/%3E%3C/g%3E%3C/svg%3E"); }
+.flashcard.pattern-tech-5::before { background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066ff' fill-opacity='0.1'%3E%3Cpath d='M15 0L0 15h30L15 0zm0 30L30 15H0l15 15z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .user-input-container {
+    width: 85%;
+  }
+  
+  .flashcard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .flashcard .instruction {
+    font-size: 14px;
+  }
+  
+  .flashcard .detail {
+    font-size: 12px;
+  }
+  
+  .template-selector {
+    gap: 10px;
+  }
+  
+  .template-option {
+    padding: 8px 12px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .user-input-container {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .template-option {
+    padding: 6px 8px;
+  }
+  
+  .template-icon {
+    font-size: 20px;
+  }
+  
+  .template-name {
+    font-size: 12px;
+  }
+  
+  .color-option {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .flashcard-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+  }
+}
+/* Add these additional styles to your styles.css file */
+
+/* Styles for handling long text in flashcards */
+.flashcard .instruction.long-text {
+  font-size: 13px;
+  max-height: 150px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.flashcard .detail.long-text {
+  font-size: 12px;
+  max-height: 80px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Webkit scrollbar styling */
+.flashcard .long-text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.flashcard .long-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.flashcard .long-text::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* Flip effect styling */
+.flashcard .card-content, .flashcard .card-header {
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+}
+
+.flashcard.flipped .card-content {
+  transform: rotateY(180deg);
+}
+
+/* Make sure icons look good in dark mode */
+html[data-theme="dark"] .flashcard .icon-container {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+html[data-theme="dark"] .flashcard.vibrant .icon-container,
+html[data-theme="dark"] .flashcard.gradient .icon-container {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Add a subtle spotlight effect on hover for more visual interest */
+.flashcard::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.flashcard:hover::after {
+  opacity: 1;
 }
