@@ -35,10 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="template-icon">🌈</span>
                     <span class="template-name">Gradient</span>
                 </div>
-                <div class="template-option" data-template="illustrated">
-                    <span class="template-icon">🎨</span>
-                    <span class="template-name">Illustrated</span>
-                </div>
             </div>
             <div class="color-selector" id="classic-colors">
                 <div class="color-option color-classic-sage active" data-color="sage"></div>
@@ -137,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateFlashcardStyles() {
         document.querySelectorAll('.flashcard').forEach(card => {
             card.className = card.className
-                .replace(/classic|modern|vibrant|gradient|illustrated/g, '')
+                .replace(/classic|modern|vibrant|gradient/g, '')
                 .replace(/sage|mint|cream|lavender|blue|purple|coral|slate|yellow|teal|pink|lime|sunset|ocean|forest|berry|light|dark|nature|tech/g, '')
                 .trim();
             card.classList.add('flashcard', currentTemplate, currentColor);
@@ -166,8 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     num_images: 1,
                     parameters: {
                         style_preset: "digital-art",
-                        guidance_scale: 9,
-                        steps: 30
+                        guidance_scale: 10,
+                        steps: 90
                     }
                 })
             });
@@ -259,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         - EV workshop environment
                         - No text/annotations
                         - Cycles render engine
-                        - 8K resolution
+                        - relavant to topic
                         - Professional lighting`;
 
                     return {
@@ -321,5 +317,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
 
