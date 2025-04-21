@@ -1,7 +1,12 @@
-const GEMINI_API_KEY = "AIzaSyAug3QzeXsavkWaGzuMNTGafLmLSva9dZU";
-const EDEN_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjI3ZWUwNjItZjE4ZS00NjFjLTg0OTgtNGU3MDc2MDFjMjMwIiwidHlwZSI6ImFwaV90b2tlbiJ9.sftmqvfpn7Jwvts9-4a-vFi3qK-QQOZuKRcBzhbRL3Y";
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-002:generateContent?key=${GEMINI_API_KEY}`;
-const EDEN_API_URL = "https://api.edenai.run/v2/image/generation";
+
+require('dotenv').config(); 
+
+const fetch = require('node-fetch'); 
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const EDEN_API_KEY = process.env.EDEN_API_KEY;
+
+const GEMINI_API_URL = process.env.GEMINI_API_URL;
+const EDEN_API_URL  = process.env.EDEN_API_URL;
 
 document.addEventListener("DOMContentLoaded", () => {
     const generateBtn = document.getElementById("generate-btn");
