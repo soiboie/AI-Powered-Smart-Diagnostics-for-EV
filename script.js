@@ -1,5 +1,5 @@
 
-require('dotenv').config(); 
+
 
 const fetch = require('node-fetch'); 
 const GEMINI_API_KEY = "AIzaSyAug3QzeXsavkWaGzuMNTGafLmLSva9dZU"
